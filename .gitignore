@@ -1,0 +1,10 @@
+# Start:Initialize Whitelist
+*
+!*/
+# End:Initialize Whitelist
+
+# Files in Root
+!.gitignore
+
+# Whitelist directories
+!tmux/*
