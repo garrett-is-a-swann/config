@@ -5,6 +5,8 @@
 
 # Files in Root
 !.gitignore
+!setup
 
 # Whitelist directories
 !tmux/*
+!vim/*

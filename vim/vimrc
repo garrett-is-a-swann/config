@@ -1,0 +1,4 @@
+call ore#main()
+
+filetype plugin indent on
+syntax on

@@ -1,0 +1,11 @@
+#!/bin/bash
+for script in $(find inputrc/ -name setup); do
+    pushd $(dirname $script)
+    echo "$script"
+    . setup
+    #. "$script"
+    # $(setup)
+    popd
+done
+
+#$(find . -name setup)

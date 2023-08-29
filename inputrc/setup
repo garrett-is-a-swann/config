@@ -1,0 +1,4 @@
+#!/bin/bash
+# ln -rsf inputrc ~/.inputrc
+echo Dirname: $(dirname "$(realpath -s "$0")")
+echo inputrc ~/.inputrc
