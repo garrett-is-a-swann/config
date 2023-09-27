@@ -1,7 +1,3 @@
 #!/bin/bash
-# ln -rsf $(dirname "$(realpath -s "$0")")/vimrc ~/.vimrc
-# ln -rsf -- $(dirname "$(realpath -s "$0")")/vim ~/.vim
-function setup() {
-    ln -rsf $(pwd)/vimrc ~/.vimrc
-    ln -rsf $(pwd)/vim ~/.vim
-}
+ln -rsf $(dirname "$(realpath -s "$0")")/vimrc ~/.vimrc
+ln -rsf -- $(dirname "$(realpath -s "$0")")/vim ~/.vim

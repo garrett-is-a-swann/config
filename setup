@@ -1,5 +1,5 @@
 #!/bin/bash
-for script in $(find inputrc/ -name setup); do
+for script in $(find ./*/ -name setup); do
     pushd $(dirname $script)
     echo "$script"
     . setup

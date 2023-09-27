@@ -1,1 +1,2 @@
 ln -rsf $(dirname "$(realpath -s "$0")")/tmux.conf ~/.tmux.conf
+ln -rsf $(dirname "$(realpath -s "$0")")/tmux.conf.local ~/.tmux.conf.local
