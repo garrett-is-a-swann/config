@@ -10,3 +10,4 @@
 # Whitelist directories
 !tmux/*
 !vim/*
+!inputrc/*
