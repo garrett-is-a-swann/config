@@ -8,6 +8,7 @@
 !setup
 
 # Whitelist directories
-!tmux/*
-!vim/*
-!inputrc/*
+!tmux/**
+!vim/**
+vim/vim/.netrwhist
+!inputrc/**
