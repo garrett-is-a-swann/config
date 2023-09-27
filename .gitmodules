@@ -1,0 +1,6 @@
+[submodule "vim/vim/autoload/nerdtree"]
+	path = vim/vim/autoload/nerdtree
+	url = git@github.com:preservim/nerdtree.git
+[submodule "vim/vim/pack/vendor/start/nerdtree"]
+	path = vim/vim/pack/vendor/start/nerdtree
+	url = git@github.com:preservim/nerdtree.git

@@ -60,4 +60,7 @@ function! ore#keybinds#main() abort
 	vnoremap <s-d> c<esc>:exe 'silent norm a' . system("printf $(date '+\%Y/\%m/\%d')")<CR>
 	nnoremap <s-d> :exe 'norm i' . system("printf $(date '+\%Y/\%m/\%d')")<CR>
 	nnoremap [<s-d> :exe 'norm a' . system("printf $(date '+\%Y/\%m/\%d')")<CR>
+
+    " F5 to toggle System File Tree (NERDtree plugin)
+    nnoremap <F6> :NERDTreeToggle<cr>
 endfunction
