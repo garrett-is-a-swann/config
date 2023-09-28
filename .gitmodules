@@ -10,3 +10,6 @@
 [submodule "vim/vim/pack/vendor/start/tagbar"]
 	path = vim/vim/pack/vendor/start/tagbar
 	url = git@github.com:preservim/tagbar.git
+[submodule "vim/vim/pack/vendor/start/undotree"]
+	path = vim/vim/pack/vendor/start/undotree
+	url = git@github.com:mbbill/undotree.git
