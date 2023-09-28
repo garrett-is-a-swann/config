@@ -7,3 +7,6 @@
 [submodule "vim/vim/pack/vendor/start/supertab"]
 	path = vim/vim/pack/vendor/start/supertab
 	url = https://github.com/ervandew/supertab
+[submodule "vim/vim/pack/vendor/start/tagbar"]
+	path = vim/vim/pack/vendor/start/tagbar
+	url = git@github.com:preservim/tagbar.git
