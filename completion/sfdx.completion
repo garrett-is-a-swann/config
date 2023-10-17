@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Leak this variable to cache last run of `sfdx commands`
+LAST_SFDX_COMMANDS=''
+
+# Some envrionments (git-bash) don't define this helper function for us. 
+# Self-define an implementation just in case.
+__INLINE_ltrim_colon_completions()
+{
+    if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
+        # Remove colon-word prefix from COMPREPLY items
+        local colon_word=${1%"${1##*:}"}
+        local i=${#COMPREPLY[*]}
+        while [[ $((--i)) -ge 0 ]]; do
+            COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
+        done
+    fi
+} # __ltrim_colon_completions()
+
+_completions() {
+    local suggestions cur sfdx_command;
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    sfdx_command="${COMP_WORDS[1]}"
+    if [[ "$prev" == ':' || "$cur" == ':' || ${COMP_CWORD} -eq 1 ]]; then
+        # Default back to '' incase user backs up to alter which command they're on.
+        SFDX_COMMAND_HELP='' 
+
+        _get_comp_words_by_ref -n : cur
+
+        if [ -z "$LAST_SFDX_COMMANDS" ]; then
+            LAST_SFDX_COMMANDS="$(sfdx commands)"
+        fi
+        local SFDX=$(echo "$LAST_SFDX_COMMANDS" | grep --color=never "$cur")
+        local WORDS="$(echo "$SFDX" | sed -r "s/^($cur[^:]*(:|$)).*/\1/" | python3 -c 'import sys;[print(i[:-1]) for i in sorted(list(set(sys.stdin)))]')"
+        suggestions=($(compgen -W "$WORDS" "${COMP_WORDS[1]}" -- $cur ))
+
+        COMPREPLY=("${suggestions[@]}")
+        __ltrim_colon_completions "$cur" 2> /dev/null || __INLINE_ltrim_colon_completions "$cur"
+    else # Our command is selected...
+        if [ -z "$SFDX_COMMAND_HELP" ]; then
+            SFDX_COMMAND_HELP=$($COMP_LINE --help )
+        fi
+        local WORDS="$(echo "$SFDX_COMMAND_HELP" | grep --color=never '\-\-' | sed -r 's/.*(--[a-zA-Z]*=?).*/\1/')"
+        suggestions=($(compgen -W "$WORDS" -- "$cur" ))
+        COMPREPLY=("${suggestions[@]}")
+    fi
+
+}
+
+complete -o nospace -F _completions sfdx

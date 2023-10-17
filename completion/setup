@@ -1,0 +1,2 @@
+#!/bin/bash
+ln -rsf $(dirname "$(realpath -s "$0")") ~/.completion

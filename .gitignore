@@ -10,6 +10,7 @@
 # Whitelist directories
 !tmux/**
 !vim/**
+!completion/**
 vim/vim/.netrwhist
 !inputrc/**
 !bash/**

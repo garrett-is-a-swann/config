@@ -1,3 +1,8 @@
 #!/bin/bash
-ln -rsf $(dirname "$(realpath -s "$0")")/vimrc ~/.vimrc
-ln -rsf -- $(dirname "$(realpath -s "$0")")/vim ~/.vim
+VIMRC=$(dirname "$(realpath -s "$0")")/vimrc
+VIMDIR=$(dirname "$(realpath -s "$0")")/vim
+ln -rsf "$VIMRC" ~/.vimrc
+if [ -d "$VIMDIR"  ] && [ ! -L "$VIMDIR" ]; then
+    rm -rf ~/.vim
+fi
+ln -rsf -- "$VIMDIR" ~/.vim
