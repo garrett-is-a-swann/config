@@ -74,6 +74,11 @@ function pd() {
 }
 
 function force() {
+    if command -v sfdx &> /dev/null; then
+        echo "SFDX not present."
+        return
+    fi
+    echo "SFDX"
     path=$(sed 's/([^-]*).*/\1/' <<< $*);
     attr=$(sed 's/[^-]*//' <<< $*)
     echo "sfdx force:$(sed -re 's/ /:/g' <<< $path) $attr"
@@ -113,4 +118,14 @@ vls() {
 if [ -f "$HOME/bin/.init.sh" ]; then
     pushd "$HOME/bin" > /dev/null && source ".init.sh" 
     popd > /dev/null
-else echo 'cd && git clone git@github.com:garrett-is-a-swann/bin.git'; fi
+else 
+    echo 'cd && git clone git@github.com:garrett-is-a-swann/bin.git'; 
+fi
+
+if [ -d ~/.completion ]; then
+    for completion in ~/.completion/*.completion; do
+        if command -v `echo "$completion" | sed 's/.*\///g' | sed 's/\..*//'` &> /dev/null; then
+            . "$completion"
+        fi
+    done
+fi

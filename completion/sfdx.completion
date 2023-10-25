@@ -19,6 +19,11 @@ __INLINE_ltrim_colon_completions()
 
 _completions() {
     local suggestions cur sfdx_command;
+    if ! command -v sfdx &> /dev/null; then
+        echo "SFDX not present..."
+        return
+    fi
+    echo "SFDX!!"
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     sfdx_command="${COMP_WORDS[1]}"
@@ -48,4 +53,6 @@ _completions() {
 
 }
 
-complete -o nospace -F _completions sfdx
+if command -v sfdx &> /dev/null; then
+    complete -o nospace -F _completions sfdx
+fi

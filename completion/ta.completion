@@ -5,8 +5,9 @@ _completions() {
         return
     fi
 
+
     local IFS=$'\n'
-    local WORDS="$(tls | awk '{ print $1}' | rev | cut -c 2- | rev )"
+    local WORDS="$(tmux ls | awk '{ print $1}' | rev | cut -c 2- | rev )"
     local suggestions=($(compgen -W "$WORDS" "${COMP_WORDS[1]}"))
 # | tr '\n' ' '
 
