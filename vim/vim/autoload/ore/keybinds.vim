@@ -48,7 +48,7 @@ function! ore#keybinds#main() abort
 	" For copy/pasting                             "
 	"###############################################
 
-	vnoremap <s-y> y :silent redir! > ~/.vimbuffer <bar> echon @* <bar> redir END <CR> <CR>
+	vnoremap <s-y> y :redir! > ~/.vimbuffer <bar> echon @" <bar> redir END <CR> <CR>
 	vnoremap <s-p> :'<,'>!cat ~/.vimbuffer<CR>
 	nnoremap <s-p> :r ~/.vimbuffer<CR>
 
