@@ -17,7 +17,7 @@ __INLINE_ltrim_colon_completions()
     fi
 } # __ltrim_colon_completions()
 
-_completions() {
+_completions_sfdx() {
     local suggestions cur sfdx_command;
     if ! command -v sfdx &> /dev/null; then
         echo "SFDX not present..."
@@ -54,5 +54,5 @@ _completions() {
 }
 
 if command -v sfdx &> /dev/null; then
-    complete -o nospace -F _completions sfdx
+    complete -o nospace -F _completions_sfdx sfdx
 fi

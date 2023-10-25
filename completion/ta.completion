@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_completions() {
+_completions_ta() {
     if [ "${#COMP_WORDS[@]}" != "2" ]; then
         return
     fi
@@ -20,4 +20,4 @@ _completions() {
     COMPREPLY=("${suggestions[@]}")
 }
 
-complete -F _completions ta
+complete -F _completions_ta ta
