@@ -4,7 +4,10 @@ _completions_ta() {
     if [ "${#COMP_WORDS[@]}" != "2" ]; then
         return
     fi
-
+    
+    if [ ! -z "$(tmux ls 2>&1 >/dev/null | grep 'no server')" ]; then
+        return;
+    fi
 
     local IFS=$'\n'
     local WORDS="$(tmux ls | awk '{ print $1}' | rev | cut -c 2- | rev )"
