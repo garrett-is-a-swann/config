@@ -1,2 +1,5 @@
 #!/bin/bash
-ln -rsf $(dirname "$(realpath -s "$0")") ~/.completion
+COMPLETION_DIR="~/.completion"
+if [ ! -d "$COMPLETION_DIR"  ] && [ ! -L "$COMPLETION_DIR" ]; then
+    ln -rs $(dirname "$(realpath -s "$0")") $COMPLETION_DIR
+fi
