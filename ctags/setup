@@ -1,0 +1,3 @@
+#!/bin/bash
+CTAGS=$(dirname "$(realpath -s "$0")")/ctags
+ln -rsf "$CTAGS" ~/.ctags

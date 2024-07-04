@@ -22,3 +22,9 @@
 [submodule "vim/vim/pack/vendor/start/vim-glsl"]
 	path = vim/vim/pack/vendor/start/vim-glsl
 	url = https://github.com/tikhomirov/vim-glsl.git
+[submodule "vim/vim/pack/vendor/start/vim-gutentags"]
+	path = vim/vim/pack/vendor/start/vim-gutentags
+	url = https://github.com/ludovicchabant/vim-gutentags.git
+[submodule "vim/vim/pack/vendor/start/vim-polyglot"]
+	path = vim/vim/pack/vendor/start/vim-polyglot
+	url = https://github.com/sheerun/vim-polyglot.git

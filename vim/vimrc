@@ -1,4 +1,17 @@
 call ore#main()
 
+colo desert
+
+let g:fzf_action = {
+    \ 'enter': 'drop',
+    \ 'ctrl-v': 'vsplit',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-t': 'tab drop' }
+set rtp+=~/extern/fzf
+command! -complete=dir -nargs=? Fsrc call fzf#run(fzf#wrap({'source': 'fsrc', 'dir': <q-args>}))
+nnoremap <C-O> :Fsrc<CR>
+
+set cindent cinoptions=j1,(4
+
 filetype plugin indent on
 syntax on
