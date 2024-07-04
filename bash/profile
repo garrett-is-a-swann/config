@@ -114,18 +114,28 @@ vls() {
     echo -e $str | column -t
 }
 
+# Load completions
+if [ -d ~/.completion ]; then
+    for completion in ~/.completion/*.completion; do
+        # Load the completion if the command exists.
+        command_name=$(basename "$completion" .completion)
+        if command -v "$command_name" &> /dev/null; then
+            . "$completion"
+        fi
+    done
+fi
+
+# Load aliases
+alias_path="~/.dotfile.config/bash/alias"
+if [ -d "$alias_path" ]; then
+    for alias_ in $alias_path; do
+        . "$alias_"
+    done
+fi
 
 if [ -f "$HOME/bin/.init.sh" ]; then
     pushd "$HOME/bin" > /dev/null && source ".init.sh" 
     popd > /dev/null
 else 
     echo 'cd && git clone git@github.com:garrett-is-a-swann/bin.git'; 
-fi
-
-if [ -d ~/.completion ]; then
-    for completion in ~/.completion/*.completion; do
-        if command -v `echo "$completion" | sed 's/.*\///g' | sed 's/\..*//'` &> /dev/null; then
-            . "$completion"
-        fi
-    done
 fi

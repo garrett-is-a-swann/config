@@ -1,4 +1,6 @@
 #!/bin/bash
+# Create lookup file to dotfile root
+ln -rsf . ~/.dotfile.config
 for script in $(find ./*/ -name setup); do
     pushd $(dirname $script)
     echo "$script"

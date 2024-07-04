@@ -14,3 +14,9 @@
 vim/vim/.netrwhist
 !inputrc/**
 !bash/**
+
+
+# Blacklist within Whitelisted Directories
+
+## vim swap files
+*.sw[a-zA-Z]

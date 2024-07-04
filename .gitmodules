@@ -19,3 +19,6 @@
 [submodule "vim/vim/pack/vendor/start/vim-fugitive"]
 	path = vim/vim/pack/vendor/start/vim-fugitive
 	url = git@github.com:tpope/vim-fugitive.git
+[submodule "vim/vim/pack/vendor/start/vim-glsl"]
+	path = vim/vim/pack/vendor/start/vim-glsl
+	url = https://github.com/tikhomirov/vim-glsl.git

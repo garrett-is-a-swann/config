@@ -2,3 +2,4 @@
 ln -rsf $(dirname "$(realpath -s "$0")")/bash_profile ~/.bash_profile
 ln -rsf $(dirname "$(realpath -s "$0")")/bashrc ~/.bashrc
 ln -rsf $(dirname "$(realpath -s "$0")")/profile ~/.profile
+# ln -rsf "$(dirname "$(realpath -s "$0")")/alias" "~/.alias"
