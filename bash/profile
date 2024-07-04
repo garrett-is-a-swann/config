@@ -126,11 +126,13 @@ if [ -d ~/.completion ]; then
 fi
 
 # Load aliases
-alias_path="~/.dotfile.config/bash/alias"
+alias_path="$HOME/.dotfile.config/bash/alias"
 if [ -d "$alias_path" ]; then
-    for alias_ in $alias_path; do
+    for alias_ in $alias_path/*; do
         . "$alias_"
     done
+else
+    echo "Alias path not found: $alias_path"
 fi
 
 if [ -f "$HOME/bin/.init.sh" ]; then
