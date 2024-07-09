@@ -1,5 +1,5 @@
 #!/bin/bash
-COMPLETION_DIR="~/.completion"
+COMPLETION_DIR="$HOME/.completion"
 if [ ! -d "$COMPLETION_DIR"  ] && [ ! -L "$COMPLETION_DIR" ]; then
     ln -rs $(dirname "$(realpath -s "$0")") $COMPLETION_DIR
 fi
