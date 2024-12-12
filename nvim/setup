@@ -1,2 +1,1 @@
-mkdir -p ~/.config/nvim/
-ln -rsf $(dirname "$(realpath -s "$0")")/init.vim ~/.config/nvim/init.vim
+ln -rsf $(dirname "$(realpath -s "$0")") ~/.config/nvim

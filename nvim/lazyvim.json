@@ -1,0 +1,11 @@
+{
+  "extras": [
+    "lazyvim.plugins.extras.dap.core",
+    "lazyvim.plugins.extras.editor.fzf",
+    "lazyvim.plugins.extras.lang.clangd"
+  ],
+  "news": {
+    "NEWS.md": "7429"
+  },
+  "version": 7
+}
