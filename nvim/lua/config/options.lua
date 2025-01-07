@@ -19,3 +19,7 @@ o.wrap = true
 
 o.errorbells = false
 o.visualbell = false
+
+local g = vim.g
+
+g.lazyvim_python_lsp = "pyright"
