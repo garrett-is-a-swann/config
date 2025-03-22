@@ -23,3 +23,4 @@ o.visualbell = false
 local g = vim.g
 
 g.lazyvim_python_lsp = "pyright"
+vim.g.snacks_animate = false
