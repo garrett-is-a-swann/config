@@ -10,5 +10,25 @@ return {
                 buf.name = "(" .. tostring(offset) .. ")" .. buf.name
             end,
         },
+        highlights = {
+            buffer_selected = {
+                fg = {
+                    attribute = "fg",
+                    highlight = "Type",
+                },
+            },
+            indicator_selected = {
+                fg = {
+                    attribute = "fg",
+                    highlight = "Statement",
+                },
+            },
+            background = {
+                fg = {
+                    attribute = "fg",
+                    highlight = "Question",
+                },
+            },
+        },
     },
 }
