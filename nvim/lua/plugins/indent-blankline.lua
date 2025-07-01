@@ -21,7 +21,25 @@ hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
     vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
 end)
 
+IBL_ENABLED = true
+IBL_OPTS = { indent = { highlight = highlight } }
+
 return {
     "lukas-reineke/indent-blankline.nvim",
-    opts = { indent = { highlight = highlight } },
+    opts = IBL_OPTS,
+    keys = {
+        {
+            "<leader>u<tab>",
+            mode = { "n" },
+            function()
+                if IBL_ENABLED then
+                    require("ibl").setup({ enabled = false })
+                else
+                    require("ibl").setup(IBL_OPTS)
+                end
+                IBL_ENABLED = not IBL_ENABLED
+            end,
+            desc = "Toggle Indent Blankline (ibl) verticle bars",
+        },
+    },
 }
