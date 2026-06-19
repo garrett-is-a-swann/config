@@ -140,6 +140,45 @@ test_fetch_disable_is_respected() {
     teardown_fixture
 }
 
+# --- recompute-on-change (local ref moved) --------------------------------
+
+test_refs_changed_detector() {
+    new_fixture
+    local cache gitdir r
+    cache="$(__ore_ps1_git_cache_file)"
+    gitdir="$(git rev-parse --absolute-git-dir)"
+    __ore_ps1_git_compute "$cache"          # cache written now; fixture refs are older
+    if __ore_ps1_git_refs_changed "$gitdir" "$cache"; then r=changed; else r=steady; fi
+    assert_eq "steady" "$r" "refs_changed: steady state -> false"
+    commit_local 1                          # moves refs/heads/master
+    if __ore_ps1_git_refs_changed "$gitdir" "$cache"; then r=changed; else r=steady; fi
+    assert_eq "changed" "$r" "refs_changed: after a commit -> true"
+    teardown_fixture
+}
+
+test_wrapper_recomputes_on_ref_change() {
+    if [ ! -r /usr/lib/git-core/git-sh-prompt ]; then
+        printf 'ok %d - # SKIP recompute-on-change (git-sh-prompt not found)\n' "$((TESTS_RUN + 1))"
+        TESTS_RUN=$((TESTS_RUN + 1))
+        return
+    fi
+    new_fixture
+    # shellcheck disable=SC1091
+    . /usr/lib/git-core/git-sh-prompt
+    # Park the detached background pass so only the foreground recompute writes
+    # the cache — isolates the on-change path under test.
+    export ORE_CONFIG_PS1_GIT_REFRESH_INTERVAL=3600
+    local cache; cache="$(__ore_ps1_git_cache_file)"
+    mkdir -p "$__ore_ps1_git_cache_dir"
+    printf '%(%s)T\n' -1 > "$cache.stamp"
+
+    assert_eq "master:" "$(__git_ps1_ahead_behind)" "wrapper: clean before any op"
+    commit_local 2                          # a local ref moves...
+    assert_eq "master[origin(-2)]:" "$(__git_ps1_ahead_behind)" \
+        "wrapper recomputes on a local ref change without a manual refresh"
+    teardown_fixture
+}
+
 test_clean_tree_has_no_indicator
 test_unpushed_renders_minus
 test_remote_ahead_renders_plus
@@ -152,6 +191,8 @@ test_wrapper_output
 test_recompute_is_throttled
 test_background_fetch_picks_up_remote_ahead
 test_fetch_disable_is_respected
+test_refs_changed_detector
+test_wrapper_recomputes_on_ref_change
 
 printf '1..%d\n' "$TESTS_RUN"
 [ "$TESTS_FAILED" -eq 0 ] || exit 1
