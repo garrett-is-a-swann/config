@@ -13,31 +13,31 @@
 if [ -n "$BASH_VERSION" ]; then
     ## include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	    . "$HOME/.bashrc"
+        . "$HOME/.bashrc"
     fi
 fi
 
 # set PATH so it includes user's private bin directories
-export PATH=".:$HOME/bin:$PATH:$HOME/.local/bin:$HOME/.npm-global/bin:./node_modules/.bin"
+export PATH=".:$HOME/bin:$PATH:$HOME/.local/bin:$HOME/.npm-global/bin:./node_modules/.bin:/usr/local/go/bin:$HOME/go/bin"
 
 export FORMAT="\nID\t{{.ID}}\nIMAGE\t{{.Image}}\nCOMMAND\t{{.Command}}\nCREATED\t{{.RunningFor}}\nSTATUS\t{{.Status}}\nPORTS\t{{.Ports}}\nNAMES\t{{.Names}}\n"
 
-export EDITOR="/usr/bin/vim"
+export EDITOR="/snap/bin/nvim"
 
-function solo(){
+function solo() {
     unset GIT_COMMITTER_NAME
     unset GIT_COMMITTER_EMAIL
 }
 
 #pair_up "garrett-is-a-swann" "your@email" && git commit
-function pair_up(){
+function pair_up() {
     export GIT_COMMITTER_NAME=$1
     export GIT_COMMITTER_EMAIL=$2
 }
 
-function pconn_func(){
+function pconn_func() {
     while [ -z "$PCONNPASS" ]; do
-        looper=1;
+        looper=1
         printf "Enter your db pass pls: "
         read -s PCONNPASS
         export PCONNPASS
@@ -45,13 +45,13 @@ function pconn_func(){
         if [ $? -eq 2 ]; then
             unset PCONNPASS
         fi
-    done 
-    if [ -z "$looper" ]; then 
+    done
+    if [ -z "$looper" ]; then
         PGPASSWORD=$PCONNPASS psql -h localhost -p 5432 -d core -U admin $*
     fi
     unset looper
 }
-function docker_conn(){
+function docker_conn() {
     docker exec -it $1 bash
 }
 
@@ -74,18 +74,18 @@ function pd() {
 }
 
 function force() {
-    if command -v sfdx &> /dev/null; then
+    if command -v sfdx &>/dev/null; then
         echo "SFDX not present."
         return
     fi
     echo "SFDX"
-    path=$(sed 's/([^-]*).*/\1/' <<< $*);
-    attr=$(sed 's/[^-]*//' <<< $*)
-    echo "sfdx force:$(sed -re 's/ /:/g' <<< $path) $attr"
-          sfdx force:$(sed -re 's/ /:/g' <<< $path) $attr
+    path=$(sed 's/([^-]*).*/\1/' <<<$*)
+    attr=$(sed 's/[^-]*//' <<<$*)
+    echo "sfdx force:$(sed -re 's/ /:/g' <<<$path) $attr"
+    sfdx force:$(sed -re 's/ /:/g' <<<$path) $attr
 }
 
-colorize()       { echo -e "\e[$(echo "${@:1:$(($#-1))}" | sed 's/ /;/g')m${!#}\e[0m"; }
+colorize() { echo -e "\e[$(echo "${@:1:$(($# - 1))}" | sed 's/ /;/g')m${!#}\e[0m"; }
 
 vls() {
     ls=$(ls --color=always --group-directories-first)
@@ -94,7 +94,7 @@ vls() {
     str=''
     i=1
     for el in $ls; do
-        ccount=$(( $(( $(tput cols) / $(wc -m <<< $el) )) + 1 ))
+        ccount=$(($(($(tput cols) / $(wc -m <<<$el))) + 1))
         if [ $ccount -lt $col ]; then
             col=$ccount
         fi
@@ -103,13 +103,13 @@ vls() {
     for el in $ls; do
         if [ -f ".$el.swp" ] || [ -f ".$el.swo" ]; then
             str="$str$(colorize 4 "*$el") "
-        else 
+        else
             str="$str$el "
         fi
-        if [ $(( i % $col )) == 0 ] && [ ! $i == 0 ]; then 
+        if [ $((i % $col)) == 0 ] && [ ! $i == 0 ]; then
             str="$str\n\n"
         fi
-        i=$(( i + 1 ))
+        i=$((i + 1))
     done
     echo -e $str | column -t
 }
@@ -119,7 +119,7 @@ if [ -d ~/.completion ]; then
     for completion in ~/.completion/*.completion; do
         # Load the completion if the command exists.
         command_name=$(basename "$completion" .completion)
-        if command -v "$command_name" &> /dev/null; then
+        if command -v "$command_name" &>/dev/null; then
             . "$completion"
         fi
     done
@@ -136,8 +136,8 @@ else
 fi
 
 if [ -f "$HOME/bin/.init.sh" ]; then
-    pushd "$HOME/bin" > /dev/null && source ".init.sh" 
-    popd > /dev/null
-else 
-    echo 'cd && git clone git@github.com:garrett-is-a-swann/bin.git'; 
+    pushd "$HOME/bin" >/dev/null && source ".init.sh"
+    popd >/dev/null
+else
+    echo 'cd && git clone git@github.com:garrett-is-a-swann/bin.git'
 fi
