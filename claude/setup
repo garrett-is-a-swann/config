@@ -1,0 +1,34 @@
+#!/bin/bash
+# Link the curated Claude Code config into ~/.claude. The live ~/.claude also
+# holds session state, caches, and credentials, so we don't symlink the whole
+# directory — we link the three files Claude loads from the ~/.claude root, plus
+# each categorical subsystem directory. The repo's categorical layout
+# (statusline/, suggestion/, hooks/, bin/, tests/) is mirrored verbatim in
+# ~/.claude; settings.json and the scripts reference those same paths.
+DIR="$(dirname "$(realpath -s "$0")")"
+mkdir -p ~/.claude
+
+# Replace dst with a symlink to src. If dst is an existing real directory
+# (not already a symlink), move it aside once so we don't clobber unmanaged
+# state. Idempotent: a re-run just refreshes the symlink.
+link() {
+    local src="$1" dst="$2"
+    if [ -L "$dst" ]; then
+        rm -f "$dst"
+    elif [ -e "$dst" ]; then
+        mv "$dst" "$dst.pre-dotfiles.bak"
+    fi
+    ln -rsfT "$src" "$dst"
+}
+
+# Files Claude Code loads from the ~/.claude root
+link "$DIR/settings.json" ~/.claude/settings.json
+link "$DIR/CLAUDE.md"     ~/.claude/CLAUDE.md
+link "$DIR/RTK.md"        ~/.claude/RTK.md
+
+# Categorical subsystem directories
+link "$DIR/statusline" ~/.claude/statusline
+link "$DIR/suggestion" ~/.claude/suggestion
+link "$DIR/hooks"      ~/.claude/hooks
+link "$DIR/bin"        ~/.claude/bin
+link "$DIR/tests"      ~/.claude/tests

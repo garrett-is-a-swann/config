@@ -15,6 +15,7 @@
 vim/vim/.netrwhist
 !inputrc/**
 !bash/**
+!claude/**
 
 
 # Blacklist within Whitelisted Directories

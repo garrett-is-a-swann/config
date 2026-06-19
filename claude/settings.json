@@ -1,0 +1,25 @@
+{
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline/statusline-command.sh"
+  },
+  "fileSuggestion": {
+    "type": "command",
+    "command": "~/.claude/suggestion/file-suggestion.sh"
+  },
+  "skipWorkflowUsageWarning": true
+}
