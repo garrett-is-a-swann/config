@@ -120,7 +120,21 @@ if ! shopt -oq posix; then
     fi
 fi
 
-alias cdw='cd /mnt/c/Users/Garre'
+alias_path="$HOME/.dotfile.config/bash/alias"
+if [ -d "$alias_path" ]; then
+    for alias_ in "$alias_path"/*; do
+        . "$alias_"
+    done
+fi
+
+if [ -d ~/.completion ]; then
+    for completion in ~/.completion/*.completion; do
+        command_name=$(basename "$completion" .completion)
+        if command -v "$command_name" &>/dev/null; then
+            . "$completion"
+        fi
+    done
+fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
