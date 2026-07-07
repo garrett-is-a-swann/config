@@ -301,6 +301,7 @@ bind -T root F12 \
     set prefix None \;\
     set prefix2 None \;\
     set key-table off \;\
+    set -g @passthrough 1 \;\
     set -g pane-active-border-style 'fg=#ff0000' \;\
     set -g pane-border-style 'fg=#ff0000' \;\
     refresh-client -S \;\
@@ -310,8 +311,8 @@ bind -T off F12 \
     set -u prefix \;\
     set -u prefix2 \;\
     set -u key-table \;\
-    set -g pane-active-border-style 'fg=#00afff' \;\
-    set -g pane-border-style 'fg=#444444' \;\
+    set -g @passthrough 0 \;\
+    run-shell -b "#{@recolor}" \;\
     refresh-client -S \;\
     display 'OUTER tmux ON'
 
@@ -330,3 +331,24 @@ set -gu prefix2
 bind -n C-a if-shell -F '#{m/ri:.*(ssh|mosh|tmux).*,#{pane_current_command}}' \
     'send-keys C-b' \
     'switch-client -T prefix'
+
+
+# -- nested-session border cue -------------------------------------------------
+# Green the current window's pane borders when ANY pane in it holds a nested
+# session (ssh, mosh, or a local nested tmux) — a reminder that a pane here is a
+# portal you need C-b to climb back out of. Border colour is a static option, so
+# @recolor re-derives it on the events that can change the answer. @passthrough
+# (set by F12) suppresses this so the red passthrough cue wins.
+set -g @passthrough 0
+set -g @recolor 'if [ "$(tmux show -gv @passthrough)" != 1 ]; then if tmux list-panes -F "#{pane_current_command}" | grep -Eqi "ssh|mosh|tmux"; then tmux set -g pane-active-border-style fg=#00d700; tmux set -g pane-border-style fg=#005f00; else tmux set -g pane-active-border-style fg=#00afff; tmux set -g pane-border-style fg=#444444; fi; fi'
+
+# re-derive on pane switch/split/kill and window switch (these hooks are unused
+# by oh-my-tmux, so a plain set-hook is idempotent across reloads)
+set-hook -g window-pane-changed    'run-shell -b "#{@recolor}"'
+set-hook -g session-window-changed 'run-shell -b "#{@recolor}"'
+
+# starting ssh in an already-focused pane fires no hook — refresh on demand
+bind g run-shell -b "#{@recolor}"
+
+# apply once at load
+run-shell -b "#{@recolor}"
