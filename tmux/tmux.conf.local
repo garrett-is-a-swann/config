@@ -288,3 +288,45 @@ bind-key -r C-y swap-window -t +1
 # pane movement
 bind-key S choose-window 'join-pane -v -s "%%"'
 bind-key V choose-window 'join-pane -h -s "%%"'
+
+
+# -- nested session passthrough (F12) ------------------------------------------
+# When ssh'd into a remote tmux (nested), press F12 to switch THIS (outer)
+# session's key bindings off: prefix, secondary prefix, and every table binding
+# stop being caught here and pass straight through to the inner session. Press
+# F12 again to reclaim the outer. Pane borders turn red while passthrough is on.
+#   NB: border colours are restored to this config's theme values (see the
+#       tmux_conf_theme_pane_*border settings above); update them if the theme changes.
+bind -T root F12 \
+    set prefix None \;\
+    set prefix2 None \;\
+    set key-table off \;\
+    set -g pane-active-border-style 'fg=#ff0000' \;\
+    set -g pane-border-style 'fg=#ff0000' \;\
+    refresh-client -S \;\
+    display 'OUTER tmux OFF — keys pass through to inner (F12 to resume)'
+
+bind -T off F12 \
+    set -u prefix \;\
+    set -u prefix2 \;\
+    set -u key-table \;\
+    set -g pane-active-border-style 'fg=#00afff' \;\
+    set -g pane-border-style 'fg=#444444' \;\
+    refresh-client -S \;\
+    display 'OUTER tmux ON'
+
+
+# -- smart inner-session prefix (C-a) ------------------------------------------
+# C-a is context-aware:
+#   - if the focused pane is a remote/nested session (ssh, mosh, or a local
+#     nested tmux), C-a pokes the INNER tmux's prefix (C-b), so your next key is
+#     a command for the inside session — no F12 toggle needed for one-offs.
+#   - otherwise C-a behaves exactly like the local prefix (enters the prefix
+#     key-table), preserving its GNU-screen-style secondary-prefix role.
+# We send C-b (not C-a) because these same dotfiles deploy to remotes, where C-a
+# is *also* the forwarder — only C-b stays a real prefix at every level.
+# C-a becomes a root binding, so we drop its prefix2 status to avoid ambiguity.
+set -gu prefix2
+bind -n C-a if-shell -F '#{m/ri:.*(ssh|mosh|tmux).*,#{pane_current_command}}' \
+    'send-keys C-b' \
+    'switch-client -T prefix'
